@@ -43,7 +43,7 @@
       <TodoListBox
         @checkBoxClick="changeComplete"
         :TaskList="TempTask"
-        @removePayload="removePayload"
+        @removeTaskItem="removeTaskItem"
       >
       </TodoListBox>
     </el-row>
@@ -62,13 +62,16 @@ export default {
   data() {
     return {
       TempTask: [],
-      TaskList: [],
+      TaskList: [
+        { title: "吃饭", isComplete: false },
+        { title: "睡觉", isComplete: true },
+        { title: "打豆豆", isComplete: false },
+      ],
       CopleteCount: 0,
       inputText: "",
     };
   },
   created() {
-    this.TaskList = this.getLocalStorage();
     this.TempTask = this.TaskList;
     let newArr = this.TaskList.filter((item) => !item.isComplete);
     this.CopleteCount = newArr.length;
@@ -76,9 +79,6 @@ export default {
   methods: {
     changeComplete(arr) {
       this.CopleteCount = arr.length;
-    },
-    getLocalStorage() {
-      return JSON.parse(localStorage.getItem("Task"));
     },
     AllTask() {
       this.TempTask = this.TaskList;
@@ -94,18 +94,12 @@ export default {
     inputUp($event) {
       if ($event.keyCode == 13) {
         this.CopleteCount++;
-        this.TaskList = this.getLocalStorage();
-        this.TaskList.push({
-          title: this.inputText,
-          isComplete: false,
-        });
-        localStorage.setItem("Task", JSON.stringify(this.TaskList));
-        this.TempTask = this.TaskList;
+        this.TaskList.push({ title: this.inputText, isComplete: false });
         this.AllTask();
         $event.target.value = "";
       }
     },
-    removePayload() {
+    removeTaskItem() {
       this.CopleteCount--;
     },
   },

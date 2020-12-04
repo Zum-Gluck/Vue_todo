@@ -3,7 +3,7 @@
     <table>
       <tbody>
         <tr
-          v-for="(item, index) in TaskLists"
+          v-for="(item, index) in TaskList"
           :key="index"
           :class="{ isComplete: item.isComplete }"
           @mouseenter="trHover"
@@ -19,7 +19,7 @@
 
             <span
               class="iconfont icon-delete delete"
-              @click="removClick(index)"
+              @click="removeTask(index)"
             >
             </span>
           </td>
@@ -33,12 +33,10 @@
 export default {
   props: ["TaskList"],
   data() {
-    return {
-      TaskLists: [],
-    };
+    return {};
   },
-  created() {
-    this.TaskLists = this.TaskList;
+  data() {
+    return {};
   },
   methods: {
     iptClick(flag) {
@@ -57,18 +55,9 @@ export default {
       currentEl.style.backgroundColor = "";
       currentEl.children[0].lastElementChild.style.display = "none";
     },
-    removClick(index) {
-      let Temp = localStorage.getItem("Task");
-      let TempArr = JSON.parse(Temp);
-      TempArr.splice(index, 1);
-      this.TaskLists = TempArr;
-      localStorage.setItem("Task", JSON.stringify(TempArr));
-      this.$emit("removePayload");
-    },
-  },
-  watch: {
-    TaskList: function (newVal) {
-      this.TaskLists = newVal;
+    removeTask(index) {
+      this.TaskList.splice(index, 1);
+      this.$emit("removeTaskItem");
     },
   },
 };
