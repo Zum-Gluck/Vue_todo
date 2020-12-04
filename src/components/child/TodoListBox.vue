@@ -3,9 +3,11 @@
     <table>
       <tbody>
         <tr
-          v-for="(item, index) in TaskList"
+          v-for="(item, index) in TaskLists"
           :key="index"
           :class="{ isComplete: item.isComplete }"
+          @mouseenter="trHover"
+          @mouseleave="trLeave"
         >
           <td>
             <input
@@ -14,6 +16,12 @@
               @click="iptClick(item.isComplete)"
             />
             {{ item.title }}
+
+            <span
+              class="iconfont icon-delete delete"
+              @click="removClick(index)"
+            >
+            </span>
           </td>
         </tr>
       </tbody>
@@ -25,7 +33,12 @@
 export default {
   props: ["TaskList"],
   data() {
-    return {};
+    return {
+      TaskLists: [],
+    };
+  },
+  created() {
+    this.TaskLists = this.TaskList;
   },
   methods: {
     iptClick(flag) {
@@ -33,6 +46,29 @@ export default {
         let newArr = this.TaskList.filter((item) => !item.isComplete);
         this.$emit("checkBoxClick", newArr);
       }, 200);
+    },
+    trHover($event) {
+      let currentEl = $event.target;
+      currentEl.style.backgroundColor = "#eee";
+      currentEl.children[0].lastElementChild.style.display = "block";
+    },
+    trLeave($event) {
+      let currentEl = $event.target;
+      currentEl.style.backgroundColor = "";
+      currentEl.children[0].lastElementChild.style.display = "none";
+    },
+    removClick(index) {
+      let Temp = localStorage.getItem("Task");
+      let TempArr = JSON.parse(Temp);
+      TempArr.splice(index, 1);
+      this.TaskLists = TempArr;
+      localStorage.setItem("Task", JSON.stringify(TempArr));
+      this.$emit("removePayload");
+    },
+  },
+  watch: {
+    TaskList: function (newVal) {
+      this.TaskLists = newVal;
     },
   },
 };
@@ -56,6 +92,14 @@ table {
       padding-left: 20px;
       input {
         margin-right: 7px;
+      }
+      .delete {
+        display: none;
+        float: right;
+        margin-right: 40px;
+        color: #f78989;
+        font-size: 18px;
+        cursor: pointer;
       }
     }
   }

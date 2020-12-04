@@ -1,0 +1,16 @@
+{
+  "id": "2247025",
+  "name": "de",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "5119332",
+      "name": "delete",
+      "font_class": "delete",
+      "unicode": "e63c",
+      "unicode_decimal": 58940
+    }
+  ]
+}
