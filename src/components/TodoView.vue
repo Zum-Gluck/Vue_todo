@@ -66,6 +66,7 @@ export default {
         { title: "吃饭", isComplete: false },
         { title: "睡觉", isComplete: true },
         { title: "打豆豆", isComplete: false },
+        { title: "写代码", isComplete: false },
       ],
       CopleteCount: 0,
       inputText: "",
